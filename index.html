@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronómetro</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+    <div id="app">
+
+    <header>
+     
+    </header>
+
+
+    <main>
+        <section class="contenedor">
+            
+            <div class="contenedor-principal-cronometro">
+                <div class="contenedor-principal-cronometro__izquierdo">
+                    <h2>Tarea Actual</h2>
+                    <div class="contenedor-tarea__reloj">
+                        <div class="tarea__reloj--informacion">
+                            <p>Descripción: {{tareaSeleccionada.descripcion}}</p>
+                            <p>Horas: {{tareaSeleccionada.horas}}</p>
+                            <p>Minutos: {{tareaSeleccionada.minutos}}</p>
+                            <p>Segundos: {{tareaSeleccionada.segundos}}</p>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="contenedor-principal-cronometro__derecho">
+                    <h2 v-if="cronoMode.length > 0">{{cronoMode}}</h2>
+                    <h2 v-else>Elige una opción</h2>
+                    <form>
+
+                        <label>
+                            Cronómetro
+                            <input @click="modoSeleccionado" type="radio" value="Cronometro" v-model="cronoMode">
+                           
+                        </label>
+
+                        <label>
+                            Temporizador
+                            <input @click="modoSeleccionado" type="radio" value="Temporizador" v-model="cronoMode">
+                        </label>
+
+                        <!-- <label>Elige cronómetro o temporizador
+                            <select v-if="tareaSeleccionada.id" id="cronoMode" name="cronoMode" v-model="cronoMode" @change="modoSeleccionado">
+                                <option value="" disabled>{{selectCronoDef}}</option>
+                                <option value="Cronometro">Cronómetro</option>
+                                <option value="Temporizador">Temporizador</option>
+                              </select>
+                        </label> -->
+                        <p>{{eligeCronoModeError}}</p>
+                      
+                      </form>
+                    <div class="contenedor-tiempos">
+                        <div class="contenedor-tiempo">
+                            <p class="tiempo__numero">{{mostrarHoras}}</p>
+                            <p class="tiempo__texto">Horas</p>
+                        </div>
+                        <div class="contenedor-tiempo">
+                            <p class="tiempo__numero">{{mostrarMinutos}}</p>
+                            <p class="tiempo__texto">Minutos</p>
+                        </div>
+                        <div class="contenedor-tiempo">
+                            <p class="tiempo__numero">{{mostrarSegundos}}</p>
+                            <p class="tiempo__texto">Segundos</p>
+                        </div>
+                    </div>
+
+                 
+                    <div v-if="(cronoMode === 'Cronometro' || cronoMode === 'Temporizador') && tareaSeleccionada.id" class="contenedor-botones-form">
+                        <button @click.prevent=validarCrono  class="btn fondoVerde">Iniciar</button>
+                        <button @click.prevent=pausarCrono  class="btn fondoNaranja"disabled>{{textoBotonPausar}}</button>
+                        <button @click.prevent=resetearCrono class="btn fondoRojo" disabled>Resetear</button>
+                       
+                    </div>
+        
+                    <div v-else class="contenedor-botones-form">
+                        <button @click.prevent=validarCrono  class="btn fondoVerde" disabled>Iniciar</button>
+                        <button @click.prevent=pausarCrono class="btn fondoNaranja" disabled>{{textoBotonPausar}}</button>
+                        <button @click.prevent=resetearCrono class="btn fondoRojo" disabled>Resetear</button>
+                    </div>
+
+                    
+                        <button v-if="relojIniciado" @click.prevent="preguntaFinalizarTarea" class="btn fondoAzul">Marcar como finalizada</button>
+               
+
+                </div>
+            </div>
+
+         
+         
+        </section>
+
+
+
+    
+
+
+
+
+      
+
+        <section class="contenedor">
+            <h2>Tus tareas</h2>
+
+            <div class="seccion-tareas-usuario">
+                <div class="contenedor-tareas-usuario">
+                    <h3>Tareas a realizar</h3>
+
+                    <div v-if="listaTareas.length > 0" v-for="tarea in listaTareas" class="tareasUsuario__tarea">
+                        <div class="tareasUsuario__descripcion tareaCreada__componente">
+                            <h2 class="tareaUsuario__titulo">Descripción</h2>
+                            <p class="tareaUsuario__descripcion">{{tarea.descripcion}}</p>
+                        </div>
+                        <div class="tareaUsuario__tiempos--contenedor">
+                            <div class="tareaUsuario__hora tareaUsuario__componente--tiempo">
+                                <h2 class="tareaUsuario__titulo">Horas</h2>
+                                <p class="tareaUsuario__hora">{{tarea.horas}}</p>
+                            </div>
+                            <div class="tareaUsuario__minutos tareaUsuario__componente--tiempo">
+                                <h2 class="tareaUsuario__titulo">Minutos</h2>
+                                <p class="tareaUsuario__minutos">{{tarea.minutos}}</p>
+                            </div>
+                            <div class="tareaUsuario__segundos tareaUsuario__componente--tiempo">
+                                <h2 class="tareaUsuario__titulo">Segundos</h2>
+                                <p class="tareaUsuario__segundos">{{tarea.segundos}}</p>
+                            </div>
+               
+                        </div>
+
+                        <div class="contenedor-botones-form">
+                            <button @click.prevent="hacerTarea(tarea)" class="tareaUsuario__componente btn fondoVerde">
+                                Hacer esta tarea
+                            </button>
+ 
+                            <button @click.prevent="eliminarTarea(tarea)" class="tareaUsuario__componente btn fondoRojo">
+                                Eliminar tarea
+                            </button>
+                        </div>
+
+
+    
+                    </div>
+
+                    <div v-else>
+                        <p>No tienes tareas pendientes!</p>
+                    </div>
+
+                    <div class="contenedor-crea-tarea ">
+                     
+                        <div v-if="tareaNueva" class="contenedor-nueva-tarea">
+                            <form class="formulario">
+                                <h2 class="form-legend">Agrega una nueva tarea</h2>
+            
+                                <fieldset class="formulario__fieldset">
+                                    <label class="formulario__fieldset--descripcion label-tarea">Descripción de tarea:
+                                        <textarea class="textArea-tarea" v-model="descripcionTarea" @focus="borrarErrorDescripcion" @blur="validarDescripcion"></textarea>
+                                        <p>{{errorDescripcion}}</p>
+                                    </label>
+                                </fieldset>
+                             
+                                <fieldset class="formulario__fieldset">
+            
+                                    
+                                    <label class="formulario__fieldset--label">Horas
+                                        <input type="number" v-model="configHoras" @focus="borrarErrorHoras" @blur="validarHoras" min="0">
+                                        <p>{{errorHoras}}</p>
+                                    </label>
+                                    <label class="formulario__fieldset--label">Minutos
+                                        <input type="number" v-model="configMinutos" @focus="borrarErrorMinutos" @blur="validarMinutos" min="0" max="59">
+                                        <p>{{errorMinutos}}</p>
+                                    </label>
+                                    <label class="formulario__fieldset--label">Segundos
+                                        <input type="number" v-model="configSegundos" @focus="borrarErrorSegundos" @blur="validarSegundos" min="0" max="59">
+                                        <p>{{errorSegundos}}</p>
+                                    </label>
+                                </fieldset>
+                        
+                                <p>{{errorEnDatos}}</p>
+                                <div  class="contenedor-botones-form">
+                                    <button v-if="(configHoras !== 0 || configMinutos !== 0 || configSegundos !== 0) && descripcionTarea.length !== 0" @click.prevent=guardarTarea  class="btn fondoVerde">Guardar</button>
+                                  
+                                    <button @click.prevent=cerrarTarea  class="btn fondoRojo">Cancelar</button>
+                                </div>
+                
+            
+                               
+                               
+                            </form>
+            
+                        </div>
+
+                        <button v-else @click.prevent = "nuevaTarea" class="btn fondoAzul">
+                            Agregar Tarea
+                        </button>
+                    </div>
+
+                   
+                </div>
+
+                <div class="contenedor-tareas-usuario">
+                    <h3>Tareas Finalizadas</h3>
+                    <div v-if="tareasHechas.length > 0" v-for="tarea in tareasHechas" class="tareasUsuario__tarea">
+                        <div class="tareasUsuario__descripcion tareaUsuario__componente">
+                            <h2 class="tareaUsuario__titulo">Descripción</h2>
+                            <p class="tareaUsuario__descripcion">{{tarea.descripcion}}</p>
+                        </div>
+                        <div class="contenedor-botones-form">
+                            <button @click.prevent="verTarea" class="tareaUsuario__componente btn fondoVerde">Ver tarea</button>
+ 
+                            <button @click.prevent="eliminarTareaFinalizada(tarea)" class="tareaUsuario__componente btn fondoRojo">Eliminar tarea</button>
+                        </div>
+                        <div class="tareaUsuario__tiempos--contenedor">
+                            <div class="tareaUsuario__hora tareaUsuario__componente--tiempo">
+                                <h2 class="tareaUsuario__titulo">Horas</h2>
+                                <p class="tareaUsuario__hora">{{tarea.horas}}</p>
+                            </div>
+                            <div class="tareaUsuario__minutos tareaUsuario__componente--tiempo">
+                                <h2 class="tareaUsuario__titulo">Minutos</h2>
+                                <p class="tareaUsuario__minutos">{{tarea.minutos}}</p>
+                            </div>
+                            <div class="tareaUsuario__segundos tareaUsuario__componente--tiempo">
+                                <h2 class="tareaUsuario__titulo">Segundos</h2>
+                                <p class="tareaUsuario__segundos">{{tarea.segundos}}</p>
+                            </div>
+                            <div class="tareaUsuario__segundos tareaUsuario__componente--tiempo tiempoRestante">
+                                <h2 class="tareaUsuario__titulo">Tiempo Restante</h2>
+                                <p class="tareaUsuario__restante">{{tarea.pendiente}}</p>
+                            </div>
+                            
+                        </div>
+                     
+                       
+                    </div>
+
+
+                    <div v-else>
+                        <p>Las tareas finalizadas aparecerán aquí</p>
+                    </div>
+                    
+                </div>
+            </div>
+
+        </section>
+    </main>
+       
+
+
+    
+
+
+    </div>
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="./main.js"></script>
+</body>
+</html>

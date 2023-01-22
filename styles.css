@@ -1,0 +1,390 @@
+/* GLOBALES */
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --colorFondoPrincipal: rgb(88, 0, 88);
+    --colorFondoDivs: purple;
+    --colorFondoSecundario: rgb(158, 1, 158);
+    --colorVerde: green;
+    --colorVerdeHover: rgb(73, 233, 59);
+    --colorNaranja: orange; 
+    --colorAmarillo: rgb(251, 255, 0);
+    --colorRojo: red;
+    --colorRojoClaro: orangered;
+    --colorAzul: blue;
+    --colorCyan: cyan;
+}
+
+
+
+body {
+    font-size: 1.6rem;
+    box-sizing: inherit;
+    font-family: 'PT Sans', sans-serif;
+    color: white;
+    min-height: 100vh;
+
+    text-align: center;
+    background-color: var(--colorFondoPrincipal);
+}
+
+
+
+.contenedor {
+    margin: 0 auto;
+    max-width: 95%;
+    
+}
+
+@media(min-width: 768px) {
+    .contenedor {
+        width: 1200px;
+    }
+}
+
+img {
+    max-width: 100%;
+}
+
+h1 {
+    font-size: 3.2rem;
+}
+
+h2 {
+    font-size: 2.8rem;
+}
+
+h3 {
+    font-size: 2.4rem;
+}
+
+h4 {
+    font-size: 2rem;
+}
+
+
+
+h1,
+h2,
+h3,
+h4 {
+    padding: 2rem 0;
+}
+
+h3,
+h4 {
+    text-transform: capitalize;
+}
+
+a {
+    font-size: 2rem;
+}
+
+p {
+    margin-bottom: 1rem;
+    line-height: 2;
+}
+
+.btn {
+    padding: 2rem;
+    font-weight: bold;
+    color: white;
+    flex-basis: 33.3%;
+    text-transform: uppercase;
+   
+}
+
+
+
+.btn:hover {
+    cursor: pointer;
+    transition: background-color .5s;
+    color: black;
+}
+
+.fondoVerde  {
+    background-color: var(--colorVerde);
+}
+
+.fondoVerde:hover {
+    background-color: var(--colorVerdeHover);
+   
+    
+}
+
+.fondoNaranja {
+    background-color: var(--colorNaranja);
+}
+
+.fondoNaranja:hover {
+    background-color: var(--colorAmarillo);
+}
+
+.fondoRojo {
+    background-color: var(--colorRojo);
+}
+
+.fondoRojo:hover {
+    background-color: var(--colorRojoClaro);
+}
+
+.fondoAzul {
+    background-color: var(--colorAzul);
+}
+
+.fondoAzul:hover {
+    background-color: var(--colorCyan);
+}
+
+.btn:disabled {
+    cursor: unset;
+    background-color: grey;
+    color: white;
+}
+
+
+/******* INDEX *******/
+section {
+    margin: 2rem auto!important;
+}
+
+section.contenedor {
+    background-color: var(--colorFondoDivs);
+}
+
+/******* Display de números *******/
+
+
+.contenedor-principal-cronometro {
+    display: flex;
+    flex-direction: column;
+    
+    align-items: center;
+    gap: 2rem;
+    padding: 1rem;
+    
+}
+
+
+
+@media(min-width: 768px){
+    .contenedor-principal-cronometro {
+    
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: baseline;
+        
+       
+        
+        
+    }
+}
+
+
+
+
+
+.tarea__reloj--informacion {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+}
+
+.contenedor-principal-cronometro__derecho,
+.contenedor-principal-cronometro__izquierdo{
+    flex-basis: calc(50% - 2rem);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.contenedor-tiempos {
+    
+    
+    display: flex;
+    
+    justify-content: space-between;
+    margin: 2rem 0;
+    background-color: var(--colorFondoSecundario);
+    
+    
+}
+
+.contenedor-tiempo {
+   
+    flex-basis: 33.3%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 2rem;
+    
+}
+
+.tiempo__texto {
+    text-transform: uppercase;
+}
+
+
+
+/****** CREAR NUEVA TAREA **********/
+
+
+
+.formulario {
+    
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem;
+    
+}
+
+.formulario__fieldset {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    padding: 2rem 0;
+    background-color: var(--colorFondoSecundario);
+    border: none;
+  
+
+
+}
+
+@media(min-width: 768px){
+    .formulario__fieldset {
+        flex-direction: row;
+    }
+}
+
+/******** Descripcion TAREA **********/
+
+.label-tarea{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 2rem;
+   
+}
+
+.textArea-tarea {
+    margin-top: 1rem;
+    height: 6rem;
+
+}
+
+
+/****** Horas Tarea ********/
+
+.formulario__fieldset--label {
+    width: calc(33.3% - 10px);
+    display: flex;
+    
+    flex-direction: column-reverse;
+    gap: 2rem;
+
+  
+    
+}
+
+
+.formulario__fieldset--label input {
+    padding: 2rem 0;
+    text-align: center;
+    font-size: 1.8rem;
+    
+    
+   
+}
+
+.contenedor-botones-form {
+   
+    display: flex;
+
+    justify-content: space-evenly;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+
+}
+
+
+@media(min-width: 768px){
+    .contenedor-botones-form {
+    
+        flex-wrap: nowrap;
+    }
+}
+
+
+
+
+/********* TAREAS USUARIO ************/
+
+.seccion-tareas-usuario {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media(min-width: 768px){
+    .seccion-tareas-usuario{
+      
+        flex-direction:row;
+        justify-content: space-between;
+        align-items: baseline;
+        
+    }
+}
+
+
+
+.contenedor-tareas-usuario {
+    
+    flex-basis: calc(50% - 1rem); 
+    display: flex;
+    flex-direction: column;
+}
+
+
+.tareasUsuario__tarea {
+   
+    background-color: var(--colorFondoSecundario);
+    margin-bottom: 2rem;
+}
+
+.tareaUsuario__tiempos--contenedor {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.tareaUsuario__titulo {
+    font-size: 1.6rem;
+    
+}
+
+.tareaUsuario__componente--tiempo {
+    flex-basis: calc(33.3%);
+}
+
+.tiempoRestante {
+    flex-basis: calc(100%)!important;
+}
